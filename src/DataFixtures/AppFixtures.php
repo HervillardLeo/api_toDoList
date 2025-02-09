@@ -11,9 +11,7 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $task = new Task()
-                    ->setTitle("Fixture Task")
-                    ->setIsCompleted()
-                    ->setCreatedAt();
+                    ->setTitle("Fixture Task");
 
         $manager->persist($task);
 

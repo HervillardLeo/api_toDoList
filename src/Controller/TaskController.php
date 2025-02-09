@@ -5,19 +5,19 @@ namespace App\Controller;
 use App\Entity\Task;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/tasks', name: 'api_tasks_')]
 final class TaskController extends AbstractController
 {
     #[Route('', methods: ['GET'])]
     public function list(TaskRepository $taskRepository, SerializerInterface $serializer): JsonResponse
-    {   
+    {
         $taskList = $taskRepository->findAll();
         $jsonTaskList = $serializer->serialize($taskList, 'json');
         return new JsonResponse($jsonTaskList, Response::HTTP_OK, [], true);
@@ -43,7 +43,7 @@ final class TaskController extends AbstractController
     }
 
     #[Route('/{id}', methods: ['DELETE'])]
-    public function delete(Task $task, EntityManagerInterface $em, SerializerInterface $serializer): JsonResponse
+    public function delete(Task $task, EntityManagerInterface $em): JsonResponse
     {
         $em->remove($task);
         $em->flush();
