@@ -25,6 +25,12 @@ class Task
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
+    public function __construct()
+    {
+        $this->isCompleted = false;
+        $this->createdAt = new \DateTime();
+    }
+
     public function getId(): ?Uuid
     {
         return $this->id;
@@ -47,7 +53,7 @@ class Task
         return $this->isCompleted;
     }
 
-    public function setIsCompleted(bool $isCompleted): static
+    public function setIsCompleted(bool $isCompleted = false): static
     {
         $this->isCompleted = $isCompleted;
 
@@ -59,7 +65,7 @@ class Task
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): static
+    public function setCreatedAt(\DateTimeInterface $createdAt = new \DateTime()): static
     {
         $this->createdAt = $createdAt;
 

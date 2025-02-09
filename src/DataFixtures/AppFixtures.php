@@ -12,8 +12,8 @@ class AppFixtures extends Fixture
     {
         $task = new Task()
                     ->setTitle("Fixture Task")
-                    ->setIsCompleted(false)
-                    ->setCreatedAt(new \DateTime());
+                    ->setIsCompleted()
+                    ->setCreatedAt();
 
         $manager->persist($task);
 
