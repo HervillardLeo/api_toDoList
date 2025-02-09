@@ -32,4 +32,13 @@ final class TaskController extends AbstractController
 
         return new JsonResponse($serializer->serialize($task, 'json'), Response::HTTP_CREATED, [], true);
     }
+
+    #[Route('/{id}/complete', methods: ['PATCH'])]
+    public function complete(Task $task, EntityManagerInterface $em, SerializerInterface $serializer): JsonResponse
+    {
+        $task->setisCompleted(true);
+        $em->flush();
+
+        return new JsonResponse($serializer->serialize($task, 'json'), Response::HTTP_CREATED, [], true);
+    }
 }
