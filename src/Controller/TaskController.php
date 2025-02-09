@@ -39,6 +39,15 @@ final class TaskController extends AbstractController
         $task->setisCompleted(true);
         $em->flush();
 
-        return new JsonResponse($serializer->serialize($task, 'json'), Response::HTTP_CREATED, [], true);
+        return new JsonResponse($serializer->serialize($task, 'json'), Response::HTTP_OK, [], true);
+    }
+
+    #[Route('/{id}', methods: ['DELETE'])]
+    public function delete(Task $task, EntityManagerInterface $em, SerializerInterface $serializer): JsonResponse
+    {
+        $em->remove($task);
+        $em->flush();
+
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 }
