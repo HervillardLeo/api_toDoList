@@ -54,14 +54,9 @@ final class TaskController extends AbstractController
     }
 
     #[Route('/{id}/complete', methods: ['PATCH'])]
-    public function complete(int $id, TaskRepository $taskRepository, EntityManagerInterface $em, SerializerInterface $serializer): JsonResponse
+    public function complete(Task $task, TaskRepository $taskRepository, EntityManagerInterface $em, SerializerInterface $serializer): JsonResponse
     {
         try {
-            $task = $taskRepository->find($id);
-            if (!$task) {
-                return new JsonResponse(['error' => 'Task not found'], Response::HTTP_NOT_FOUND);
-            }
-
             $task->setIsCompleted(true);
             $em->flush();
 
@@ -72,14 +67,9 @@ final class TaskController extends AbstractController
     }
 
     #[Route('/{id}', methods: ['DELETE'])]
-    public function delete(int $id, TaskRepository $taskRepository, EntityManagerInterface $em): JsonResponse
+    public function delete(Task $task, TaskRepository $taskRepository, EntityManagerInterface $em): JsonResponse
     {
         try {
-            $task = $taskRepository->find($id);
-            if (!$task) {
-                return new JsonResponse(['error' => 'Task not found'], Response::HTTP_NOT_FOUND);
-            }
-
             $em->remove($task);
             $em->flush();
 
