@@ -54,7 +54,7 @@ final class TaskController extends AbstractController
     }
 
     #[Route('/{id}/complete', methods: ['PATCH'])]
-    public function complete(Task $task, TaskRepository $taskRepository, EntityManagerInterface $em, SerializerInterface $serializer): JsonResponse
+    public function complete(Task $task, EntityManagerInterface $em, SerializerInterface $serializer): JsonResponse
     {
         try {
             $task->setIsCompleted(true);
@@ -67,7 +67,7 @@ final class TaskController extends AbstractController
     }
 
     #[Route('/{id}', methods: ['DELETE'])]
-    public function delete(Task $task, TaskRepository $taskRepository, EntityManagerInterface $em): JsonResponse
+    public function delete(Task $task, EntityManagerInterface $em): JsonResponse
     {
         try {
             $em->remove($task);
