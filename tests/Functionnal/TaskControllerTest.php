@@ -37,4 +37,38 @@ class TaskControllerTest extends WebTestCase
         $newTask = $this->entityManager->getRepository(Task::class)->findOneBy(['title'=> 'New Task']);
         $this->assertNotNull($newTask);
     }
+
+    public function testCompleteTask(): void
+    {
+        // Create task for test
+        $task = new Task();
+        $task->setTitle("Test Task");
+        $this->entityManager->persist($task);
+        $this->entityManager->flush();
+
+        $this->assertFalse($task->isCompleted());
+
+        $this->client->request('PATCH', "/tasks/{$task->getId()}/complete");
+
+        $this->assertResponseStatusCodeSame(200);
+        $updatedTask = $this->entityManager->getRepository(Task::class)->find($task->getId());
+        $this->assertTrue($updatedTask->isCompleted());
+    }
+
+    public function testDeleteTask(): void
+    {
+        // Create task for test
+        $task = new Task();
+        $task->setTitle("Task to Delete");
+        $this->entityManager->persist($task);
+        $this->entityManager->flush();
+
+        $id = $task->getId();
+
+        $this->client->request('DELETE', "/tasks/{$id}");
+
+        $this->assertResponseStatusCodeSame(204);
+        $deletedTask = $this->entityManager->getRepository(Task::class)->find($id);
+        $this->assertNull($deletedTask);
+    }
 }
